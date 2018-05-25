@@ -1,0 +1,30 @@
+function insertReview(review) {
+  const reviews = document.getElementById('reviews');
+  reviews.insertAdjacentHTML('beforeend', review);
+}
+
+function refreshForm(newForm) {
+  const form = document.getElementById('new_review');
+  form.outerHTML = newForm;
+}
+
+function refreshCounter(newCounter) {
+  const counter = document.getElementById('counter');
+  counter.innerHTML = newCounter;
+}
+
+function destroyMessage() {
+  const message = document.querySelector('.no-reviews-message');
+  if (message) {
+    message.remove();
+  }
+}
+
+<% if @review.errors.any? %>
+  refreshForm('<%= j render "reviews/new", restaurant: @restaurant, review: @review %>')
+<% else %>
+  insertReview('<%= j render "reviews/show", review: @review %>');
+  refreshForm('<%= j render "reviews/new", restaurant: @restaurant, review: Review.new %>')
+  refreshCounter('<%= j render "restaurants/counter", restaurant: @restaurant %>');
+  destroyMessage();
+<% end %>
